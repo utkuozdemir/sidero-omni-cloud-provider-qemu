@@ -1,6 +1,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
 #
-# Generated on 2024-07-13T08:21:34Z by kres 8c8b007.
+# Generated on 2024-07-15T10:06:51Z by kres ac94478.
 
 # common variables
 
@@ -21,7 +21,7 @@ PROTOBUF_GO_VERSION ?= 1.34.2
 GRPC_GO_VERSION ?= 1.4.0
 GRPC_GATEWAY_VERSION ?= 2.20.0
 VTPROTOBUF_VERSION ?= 0.6.0
-GOIMPORTS_VERSION ?= 0.22.0
+GOIMPORTS_VERSION ?= 0.23.0
 DEEPCOPY_VERSION ?= v0.5.6
 GOLANGCILINT_VERSION ?= v1.59.1
 GOFUMPT_VERSION ?= v0.6.0
@@ -145,6 +145,9 @@ target-%:  ## Builds the specified target defined in the Dockerfile. The build r
 
 local-%:  ## Builds the specified target defined in the Dockerfile using the local output type. The build result will be output to the specified local destination.
 	@$(MAKE) target-$* TARGET_ARGS="--output=type=local,dest=$(DEST) $(TARGET_ARGS)"
+
+generate:  ## Generate .proto definitions.
+	@$(MAKE) local-$@ DEST=./
 
 lint-golangci-lint:  ## Runs golangci-lint linter.
 	@$(MAKE) target-$@

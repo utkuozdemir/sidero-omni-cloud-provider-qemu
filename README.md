@@ -9,6 +9,7 @@ It also serves as a reference implementation for other cloud providers.
 ## Prerequisites
 
 To be able to run and test the provider locally, you need to meet the following requirements:
+
 - Running on a Linux machine
 - [Omni](https://github.com/siderolabs/omni) running
 - Qemu installed (`qemu-user-static`)
@@ -18,22 +19,26 @@ To be able to run and test the provider locally, you need to meet the following 
 ## Usage
 
 Create a cloud provider service account named `qemu` on Omni:
+
 ```shell
 omnictl serviceaccount create --use-user-role=false --role=CloudProvider cloud-provider:qemu
 ```
 
 Export the printed environment variables:
+
 ```shell
 export OMNI_ENDPOINT=...
 export OMNI_SERVICE_ACCOUNT_KEY=...
 ```
 
 Build the project:
+
 ```shell
 make omni-cloud-provider-qemu-linux-amd64
 ```
 
 Run the cloud provider:
+
 ```shell
 ./_out/omni-cloud-provider-qemu-linux-amd64
 ```

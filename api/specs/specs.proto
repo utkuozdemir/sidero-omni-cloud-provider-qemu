@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package sidero.omni.discovery.api.specs;
+
+option go_package = "github.com/siderolabs/omni-cloud-provider-qemu/api/specs";
+
+message QemuMachineSpec {
+  string uuid = 1;
+  string disk_path = 2;
+}
+
+message QemuMachineAllocationSpec {
+  string talos_version = 1;
+  string schematic_id = 2;
+}
