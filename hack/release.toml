@@ -1,0 +1,11 @@
+# commit to be tagged for the new release
+commit = "HEAD"
+
+project_name = "omni-cloud-provider-qemu"
+github_repo = "siderolabs/omni-cloud-provider-qemu"
+match_deps = "^github.com/(siderolabs/[a-zA-Z0-9-]+)$"
+
+# previous = -
+# pre_release = true
+
+# [notes]
