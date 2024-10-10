@@ -1,4 +1,4 @@
-# omni-cloud-provider-qemu
+# omni-infra-provider-bare-metal
 
 This repository contains the QEMU cloud provider for the Omni project.
 
@@ -34,13 +34,13 @@ export OMNI_SERVICE_ACCOUNT_KEY=...
 Build the project:
 
 ```shell
-make omni-cloud-provider-qemu-linux-amd64
+make omni-infra-provider-bare-metal-linux-amd64
 ```
 
 Run the cloud provider:
 
 ```shell
-./_out/omni-cloud-provider-qemu-linux-amd64
+./_out/omni-infra-provider-bare-metal-linux-amd64
 ```
 
 Now, when Omni creates a `MachineRequest`, you will see that one of the available machines will be provisioned and joined to Omni.

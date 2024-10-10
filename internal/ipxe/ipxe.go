@@ -25,7 +25,7 @@ import (
 	"go.uber.org/zap/zapcore"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/siderolabs/omni-cloud-provider-qemu/internal/resources"
+	"github.com/siderolabs/omni-infra-provider-bare-metal/internal/resources"
 )
 
 var errMachineNotAllocated = errors.New("machine is not allocated")

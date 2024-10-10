@@ -1,10 +1,17 @@
 ---
 kind: common.Image
-name: image-omni-cloud-provider-qemu
+name: image-omni-infra-provider-bare-metal
 spec:
   baseImage: ghcr.io/siderolabs/talosctl:v1.8.0-alpha.1
   pushLatest: false
-  droneExtraEnvironment:
+  extraEnvironment:
+    PLATFORM: linux/amd64,linux/arm64
+---
+kind: common.Image
+name: image-agent
+spec:
+  pushLatest: false
+  extraEnvironment:
     PLATFORM: linux/amd64,linux/arm64
 ---
 kind: golang.Build
@@ -26,12 +33,16 @@ spec:
     - source: api/specs/specs.proto
       subdirectory: specs
       genGateway: false
+    - source: api/agent/agent.proto
+      subdirectory: agent
+      genGateway: true
 ---
 kind: common.Release
 name: release
 spec:
   artifacts:
-    - omni-cloud-provider-qemu-*
+    - omni-infra-provider-bare-metal-*
+    - agent-*
 ---
 kind: service.CodeCov
 spec:

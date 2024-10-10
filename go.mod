@@ -1,11 +1,16 @@
-module github.com/siderolabs/omni-cloud-provider-qemu
+module github.com/siderolabs/omni-infra-provider-bare-metal
 
-go 1.22.5
+go 1.23.2
+
+replace github.com/pensando/goipmi v0.0.0-20240603174436-eb122d901c23 => github.com/siderolabs/goipmi v0.0.0-20211214143420-35f956689e67
 
 require (
 	github.com/cosi-project/runtime v0.5.5
 	github.com/google/uuid v1.6.0
+	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.20.0
 	github.com/hashicorp/go-multierror v1.1.1
+	github.com/pensando/goipmi v0.0.0-20240603174436-eb122d901c23
 	github.com/planetscale/vtprotobuf v0.6.0
 	github.com/siderolabs/gen v0.5.0
 	github.com/siderolabs/net v0.4.0
@@ -15,6 +20,7 @@ require (
 	github.com/spf13/cobra v1.8.1
 	go.uber.org/zap v1.27.0
 	golang.org/x/sync v0.7.0
+	google.golang.org/grpc v1.65.0
 	google.golang.org/protobuf v1.34.2
 )
 
@@ -44,7 +50,6 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.20.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-getter/v2 v2.2.2 // indirect
@@ -98,7 +103,6 @@ require (
 	golang.org/x/time v0.5.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240711142825-46eb208f015d // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240711142825-46eb208f015d // indirect
-	google.golang.org/grpc v1.65.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gotest.tools/v3 v3.5.1 // indirect
 )

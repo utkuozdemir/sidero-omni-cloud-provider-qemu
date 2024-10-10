@@ -17,10 +17,10 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	"github.com/siderolabs/omni-cloud-provider-qemu/internal/debug"
-	"github.com/siderolabs/omni-cloud-provider-qemu/internal/meta"
-	"github.com/siderolabs/omni-cloud-provider-qemu/internal/provider"
-	"github.com/siderolabs/omni-cloud-provider-qemu/internal/version"
+	"github.com/siderolabs/omni-infra-provider-bare-metal/internal/debug"
+	"github.com/siderolabs/omni-infra-provider-bare-metal/internal/meta"
+	"github.com/siderolabs/omni-infra-provider-bare-metal/internal/provider"
+	"github.com/siderolabs/omni-infra-provider-bare-metal/internal/version"
 )
 
 var rootCmdArgs struct {

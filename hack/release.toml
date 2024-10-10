@@ -1,8 +1,8 @@
 # commit to be tagged for the new release
 commit = "HEAD"
 
-project_name = "omni-cloud-provider-qemu"
-github_repo = "siderolabs/omni-cloud-provider-qemu"
+project_name = "omni-infra-provider-bare-metal"
+github_repo = "siderolabs/omni-infra-provider-bare-metal"
 match_deps = "^github.com/(siderolabs/[a-zA-Z0-9-]+)$"
 
 # previous = -

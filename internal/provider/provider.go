@@ -22,11 +22,11 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/siderolabs/omni-cloud-provider-qemu/internal/controller"
-	"github.com/siderolabs/omni-cloud-provider-qemu/internal/ipxe"
-	"github.com/siderolabs/omni-cloud-provider-qemu/internal/meta"
-	"github.com/siderolabs/omni-cloud-provider-qemu/internal/provisioner"
-	"github.com/siderolabs/omni-cloud-provider-qemu/internal/resources"
+	"github.com/siderolabs/omni-infra-provider-bare-metal/internal/controller"
+	"github.com/siderolabs/omni-infra-provider-bare-metal/internal/ipxe"
+	"github.com/siderolabs/omni-infra-provider-bare-metal/internal/meta"
+	"github.com/siderolabs/omni-infra-provider-bare-metal/internal/provisioner"
+	"github.com/siderolabs/omni-infra-provider-bare-metal/internal/resources"
 )
 
 // Provider is the Omni cloud provider QEMU provider.

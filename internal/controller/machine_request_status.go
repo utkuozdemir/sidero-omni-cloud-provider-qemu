@@ -21,9 +21,9 @@ import (
 	"github.com/siderolabs/omni/client/pkg/omni/resources/cloud"
 	"go.uber.org/zap"
 
-	"github.com/siderolabs/omni-cloud-provider-qemu/internal/meta"
-	"github.com/siderolabs/omni-cloud-provider-qemu/internal/provisioner"
-	"github.com/siderolabs/omni-cloud-provider-qemu/internal/resources"
+	"github.com/siderolabs/omni-infra-provider-bare-metal/internal/meta"
+	"github.com/siderolabs/omni-infra-provider-bare-metal/internal/provisioner"
+	"github.com/siderolabs/omni-infra-provider-bare-metal/internal/resources"
 )
 
 const (

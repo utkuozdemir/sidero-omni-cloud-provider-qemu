@@ -10,7 +10,7 @@ import (
 	"github.com/cosi-project/runtime/pkg/resource/protobuf"
 	"github.com/cosi-project/runtime/pkg/resource/typed"
 
-	"github.com/siderolabs/omni-cloud-provider-qemu/api/specs"
+	"github.com/siderolabs/omni-infra-provider-bare-metal/api/specs"
 )
 
 // NewQemuMachineAllocation creates a new QemuMachineAllocation resource.

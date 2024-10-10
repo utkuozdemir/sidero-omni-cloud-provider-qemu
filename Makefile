@@ -1,6 +1,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
 #
-# Generated on 2024-07-15T10:06:51Z by kres ac94478.
+# Generated on 2024-10-10T10:51:28Z by kres 34e72ac.
 
 # common variables
 
@@ -18,14 +18,14 @@ REGISTRY ?= ghcr.io
 USERNAME ?= siderolabs
 REGISTRY_AND_USERNAME ?= $(REGISTRY)/$(USERNAME)
 PROTOBUF_GO_VERSION ?= 1.34.2
-GRPC_GO_VERSION ?= 1.4.0
-GRPC_GATEWAY_VERSION ?= 2.20.0
+GRPC_GO_VERSION ?= 1.5.1
+GRPC_GATEWAY_VERSION ?= 2.22.0
 VTPROTOBUF_VERSION ?= 0.6.0
-GOIMPORTS_VERSION ?= 0.23.0
+GOIMPORTS_VERSION ?= 0.25.0
 DEEPCOPY_VERSION ?= v0.5.6
-GOLANGCILINT_VERSION ?= v1.59.1
-GOFUMPT_VERSION ?= v0.6.0
-GO_VERSION ?= 1.22.4
+GOLANGCILINT_VERSION ?= v1.61.0
+GOFUMPT_VERSION ?= v0.7.0
+GO_VERSION ?= 1.23.2
 GO_BUILDFLAGS ?=
 GO_LDFLAGS ?=
 CGO_ENABLED ?= 0
@@ -67,7 +67,7 @@ COMMON_ARGS += --build-arg=DEEPCOPY_VERSION="$(DEEPCOPY_VERSION)"
 COMMON_ARGS += --build-arg=GOLANGCILINT_VERSION="$(GOLANGCILINT_VERSION)"
 COMMON_ARGS += --build-arg=GOFUMPT_VERSION="$(GOFUMPT_VERSION)"
 COMMON_ARGS += --build-arg=TESTPKGS="$(TESTPKGS)"
-TOOLCHAIN ?= docker.io/golang:1.22-alpine
+TOOLCHAIN ?= docker.io/golang:1.23-alpine
 
 # help menu
 
@@ -131,7 +131,7 @@ else
 GO_LDFLAGS += -s
 endif
 
-all: unit-tests omni-cloud-provider-qemu image-omni-cloud-provider-qemu lint
+all: unit-tests agent image-agent omni-cloud-provider-qemu image-omni-cloud-provider-qemu lint
 
 $(ARTIFACTS):  ## Creates artifacts directory.
 	@mkdir -p $(ARTIFACTS)
@@ -178,6 +178,34 @@ unit-tests:  ## Performs unit tests
 unit-tests-race:  ## Performs unit tests with race detection enabled.
 	@$(MAKE) target-$@
 
+.PHONY: $(ARTIFACTS)/agent-linux-amd64
+$(ARTIFACTS)/agent-linux-amd64:
+	@$(MAKE) local-agent-linux-amd64 DEST=$(ARTIFACTS)
+
+.PHONY: agent-linux-amd64
+agent-linux-amd64: $(ARTIFACTS)/agent-linux-amd64  ## Builds executable for agent-linux-amd64.
+
+.PHONY: $(ARTIFACTS)/agent-linux-arm64
+$(ARTIFACTS)/agent-linux-arm64:
+	@$(MAKE) local-agent-linux-arm64 DEST=$(ARTIFACTS)
+
+.PHONY: agent-linux-arm64
+agent-linux-arm64: $(ARTIFACTS)/agent-linux-arm64  ## Builds executable for agent-linux-arm64.
+
+.PHONY: agent
+agent: agent-linux-amd64 agent-linux-arm64  ## Builds executables for agent.
+
+.PHONY: lint-markdown
+lint-markdown:  ## Runs markdownlint.
+	@$(MAKE) target-$@
+
+.PHONY: lint
+lint: lint-golangci-lint lint-gofumpt lint-govulncheck lint-markdown  ## Run all linters for the project.
+
+.PHONY: image-agent
+image-agent:  ## Builds image for agent.
+	@$(MAKE) target-$@ TARGET_ARGS="--tag=$(REGISTRY)/$(USERNAME)/agent:$(IMAGE_TAG)"
+
 .PHONY: $(ARTIFACTS)/omni-cloud-provider-qemu-linux-amd64
 $(ARTIFACTS)/omni-cloud-provider-qemu-linux-amd64:
 	@$(MAKE) local-omni-cloud-provider-qemu-linux-amd64 DEST=$(ARTIFACTS)
@@ -194,13 +222,6 @@ omni-cloud-provider-qemu-linux-arm64: $(ARTIFACTS)/omni-cloud-provider-qemu-linu
 
 .PHONY: omni-cloud-provider-qemu
 omni-cloud-provider-qemu: omni-cloud-provider-qemu-linux-amd64 omni-cloud-provider-qemu-linux-arm64  ## Builds executables for omni-cloud-provider-qemu.
-
-.PHONY: lint-markdown
-lint-markdown:  ## Runs markdownlint.
-	@$(MAKE) target-$@
-
-.PHONY: lint
-lint: lint-golangci-lint lint-gofumpt lint-govulncheck lint-markdown  ## Run all linters for the project.
 
 .PHONY: image-omni-cloud-provider-qemu
 image-omni-cloud-provider-qemu:  ## Builds image for omni-cloud-provider-qemu.

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package sidero.omni.discovery.api.specs;
 
-option go_package = "github.com/siderolabs/omni-cloud-provider-qemu/api/specs";
+option go_package = "github.com/siderolabs/omni-infra-provider-bare-metal/api/specs";
 
 message QemuMachineSpec {
   string uuid = 1;

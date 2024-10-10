@@ -1,6 +1,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
 #
-# Generated on 2024-06-25T08:36:21Z by kres 4c9f215.
+# Generated on 2024-10-10T22:15:25Z by kres 34e72ac.
 
 name: default
 concurrency:
@@ -82,12 +82,32 @@ jobs:
           files: _out/coverage-unit-tests.txt
           token: ${{ secrets.CODECOV_TOKEN }}
         timeout-minutes: 3
-      - name: omni-cloud-provider-qemu
+      - name: agent
         run: |
-          make omni-cloud-provider-qemu
+          make agent
       - name: lint
         run: |
           make lint
+      - name: Login to registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+      - name: image-agent
+        run: |
+          make image-agent
+      - name: push-agent
+        if: github.event_name != 'pull_request'
+        env:
+          PLATFORM: linux/amd64,linux/arm64
+          PUSH: "true"
+        run: |
+          make image-agent
+      - name: omni-cloud-provider-qemu
+        run: |
+          make omni-cloud-provider-qemu
       - name: Login to registry
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
@@ -104,11 +124,18 @@ jobs:
           PUSH: "true"
         run: |
           make image-omni-cloud-provider-qemu
+      - name: push-omni-cloud-provider-qemu-latest
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          PUSH: "true"
+        run: |
+          make image-omni-cloud-provider-qemu IMAGE_TAG=latest
       - name: Generate Checksums
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          sha256sum _out/omni-cloud-provider-qemu-* > _out/sha256sum.txt
-          sha512sum _out/omni-cloud-provider-qemu-* > _out/sha512sum.txt
+          cd _out
+          sha256sum omni-infra-provider-bare-metal-* agent-* > sha256sum.txt
+          sha512sum omni-infra-provider-bare-metal-* agent-* > sha512sum.txt
       - name: release-notes
         if: startsWith(github.ref, 'refs/tags/')
         run: |
@@ -120,5 +147,6 @@ jobs:
           body_path: _out/RELEASE_NOTES.md
           draft: "true"
           files: |-
-            _out/omni-cloud-provider-qemu-*
+            _out/omni-infra-provider-bare-metal-*
+            _out/agent-*
             _out/sha*.txt
