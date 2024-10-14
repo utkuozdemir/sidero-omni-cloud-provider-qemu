@@ -4,7 +4,7 @@
 // - protoc             v4.24.4
 // source: agent/agent.proto
 
-package agent
+package agentpb
 
 import (
 	context "context"
@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	AgentService_SetIPMICredentials_FullMethodName = "/management.AgentService/SetIPMICredentials"
+	AgentService_GetIPMIInfo_FullMethodName        = "/management.AgentService/GetIPMIInfo"
 )
 
 // AgentServiceClient is the client API for AgentService service.
@@ -28,6 +29,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AgentServiceClient interface {
 	SetIPMICredentials(ctx context.Context, in *SetIPMICredentialsRequest, opts ...grpc.CallOption) (*SetIPMICredentialsResponse, error)
+	GetIPMIInfo(ctx context.Context, in *GetIPMIInfoRequest, opts ...grpc.CallOption) (*GetIPMIInfoResponse, error)
 }
 
 type agentServiceClient struct {
@@ -48,11 +50,22 @@ func (c *agentServiceClient) SetIPMICredentials(ctx context.Context, in *SetIPMI
 	return out, nil
 }
 
+func (c *agentServiceClient) GetIPMIInfo(ctx context.Context, in *GetIPMIInfoRequest, opts ...grpc.CallOption) (*GetIPMIInfoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetIPMIInfoResponse)
+	err := c.cc.Invoke(ctx, AgentService_GetIPMIInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AgentServiceServer is the server API for AgentService service.
 // All implementations must embed UnimplementedAgentServiceServer
 // for forward compatibility.
 type AgentServiceServer interface {
 	SetIPMICredentials(context.Context, *SetIPMICredentialsRequest) (*SetIPMICredentialsResponse, error)
+	GetIPMIInfo(context.Context, *GetIPMIInfoRequest) (*GetIPMIInfoResponse, error)
 	mustEmbedUnimplementedAgentServiceServer()
 }
 
@@ -65,6 +78,9 @@ type UnimplementedAgentServiceServer struct{}
 
 func (UnimplementedAgentServiceServer) SetIPMICredentials(context.Context, *SetIPMICredentialsRequest) (*SetIPMICredentialsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetIPMICredentials not implemented")
+}
+func (UnimplementedAgentServiceServer) GetIPMIInfo(context.Context, *GetIPMIInfoRequest) (*GetIPMIInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIPMIInfo not implemented")
 }
 func (UnimplementedAgentServiceServer) mustEmbedUnimplementedAgentServiceServer() {}
 func (UnimplementedAgentServiceServer) testEmbeddedByValue()                      {}
@@ -105,6 +121,24 @@ func _AgentService_SetIPMICredentials_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AgentService_GetIPMIInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIPMIInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AgentServiceServer).GetIPMIInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AgentService_GetIPMIInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AgentServiceServer).GetIPMIInfo(ctx, req.(*GetIPMIInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AgentService_ServiceDesc is the grpc.ServiceDesc for AgentService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -115,6 +149,10 @@ var AgentService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetIPMICredentials",
 			Handler:    _AgentService_SetIPMICredentials_Handler,
+		},
+		{
+			MethodName: "GetIPMIInfo",
+			Handler:    _AgentService_GetIPMIInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

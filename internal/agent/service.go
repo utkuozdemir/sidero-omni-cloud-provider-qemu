@@ -3,6 +3,8 @@ package agent
 import (
 	"context"
 	"fmt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"go.uber.org/zap"
 
@@ -13,13 +15,13 @@ import (
 const ipmiUsername = "talos-agent"
 
 type serviceServer struct {
-	agent.UnimplementedAgentServiceServer
+	agentpb.UnimplementedAgentServiceServer
 
 	logger *zap.Logger
 }
 
-func (s *serviceServer) SetIPMICredentials(_ context.Context, req *agent.SetIPMICredentialsRequest) (*agent.SetIPMICredentialsResponse, error) {
-	s.logger.Debug("set ipmi credentials", zap.Uint32("ipmi_address", req.Uid))
+func (s *serviceServer) SetIPMICredentials(context.Context, *agentpb.SetIPMICredentialsRequest) (*agentpb.SetIPMICredentialsResponse, error) {
+	s.logger.Debug("set ipmi credentials", zap.String("username", ipmiUsername))
 
 	password, err := bmc.AttemptBMCUserSetup(ipmiUsername, s.logger)
 	if err != nil {
@@ -28,5 +30,14 @@ func (s *serviceServer) SetIPMICredentials(_ context.Context, req *agent.SetIPMI
 
 	_ = password
 
-	return &agent.SetIPMICredentialsResponse{Message: "success"}, nil
+	return &agentpb.SetIPMICredentialsResponse{Password: password}, nil
+}
+
+func (s *serviceServer) GetIPMIInfo(context.Context, *agentpb.GetIPMIInfoRequest) (*agentpb.GetIPMIInfoResponse, error) {
+	ip, port, err := bmc.GetBMCIPPort()
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "error getting bmc ip port: %v", err)
+	}
+
+	return &agentpb.GetIPMIInfoResponse{Ip: ip, Port: uint32(port)}, nil
 }

@@ -2,7 +2,7 @@
 // protoc-gen-go-vtproto version: v0.6.0
 // source: agent/agent.proto
 
-package agent
+package agentpb
 
 import (
 	fmt "fmt"
@@ -25,8 +25,6 @@ func (m *SetIPMICredentialsRequest) CloneVT() *SetIPMICredentialsRequest {
 		return (*SetIPMICredentialsRequest)(nil)
 	}
 	r := new(SetIPMICredentialsRequest)
-	r.Uid = m.Uid
-	r.Pass = m.Pass
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -43,8 +41,7 @@ func (m *SetIPMICredentialsResponse) CloneVT() *SetIPMICredentialsResponse {
 		return (*SetIPMICredentialsResponse)(nil)
 	}
 	r := new(SetIPMICredentialsResponse)
-	r.Message = m.Message
-	r.Error = m.Error
+	r.Password = m.Password
 	if len(m.unknownFields) > 0 {
 		r.unknownFields = make([]byte, len(m.unknownFields))
 		copy(r.unknownFields, m.unknownFields)
@@ -56,16 +53,44 @@ func (m *SetIPMICredentialsResponse) CloneMessageVT() proto.Message {
 	return m.CloneVT()
 }
 
+func (m *GetIPMIInfoRequest) CloneVT() *GetIPMIInfoRequest {
+	if m == nil {
+		return (*GetIPMIInfoRequest)(nil)
+	}
+	r := new(GetIPMIInfoRequest)
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
+	return r
+}
+
+func (m *GetIPMIInfoRequest) CloneMessageVT() proto.Message {
+	return m.CloneVT()
+}
+
+func (m *GetIPMIInfoResponse) CloneVT() *GetIPMIInfoResponse {
+	if m == nil {
+		return (*GetIPMIInfoResponse)(nil)
+	}
+	r := new(GetIPMIInfoResponse)
+	r.Ip = m.Ip
+	r.Port = m.Port
+	if len(m.unknownFields) > 0 {
+		r.unknownFields = make([]byte, len(m.unknownFields))
+		copy(r.unknownFields, m.unknownFields)
+	}
+	return r
+}
+
+func (m *GetIPMIInfoResponse) CloneMessageVT() proto.Message {
+	return m.CloneVT()
+}
+
 func (this *SetIPMICredentialsRequest) EqualVT(that *SetIPMICredentialsRequest) bool {
 	if this == that {
 		return true
 	} else if this == nil || that == nil {
-		return false
-	}
-	if this.Uid != that.Uid {
-		return false
-	}
-	if this.Pass != that.Pass {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -84,10 +109,7 @@ func (this *SetIPMICredentialsResponse) EqualVT(that *SetIPMICredentialsResponse
 	} else if this == nil || that == nil {
 		return false
 	}
-	if this.Message != that.Message {
-		return false
-	}
-	if this.Error != that.Error {
+	if this.Password != that.Password {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -95,6 +117,44 @@ func (this *SetIPMICredentialsResponse) EqualVT(that *SetIPMICredentialsResponse
 
 func (this *SetIPMICredentialsResponse) EqualMessageVT(thatMsg proto.Message) bool {
 	that, ok := thatMsg.(*SetIPMICredentialsResponse)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *GetIPMIInfoRequest) EqualVT(that *GetIPMIInfoRequest) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *GetIPMIInfoRequest) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*GetIPMIInfoRequest)
+	if !ok {
+		return false
+	}
+	return this.EqualVT(that)
+}
+func (this *GetIPMIInfoResponse) EqualVT(that *GetIPMIInfoResponse) bool {
+	if this == that {
+		return true
+	} else if this == nil || that == nil {
+		return false
+	}
+	if this.Ip != that.Ip {
+		return false
+	}
+	if this.Port != that.Port {
+		return false
+	}
+	return string(this.unknownFields) == string(that.unknownFields)
+}
+
+func (this *GetIPMIInfoResponse) EqualMessageVT(thatMsg proto.Message) bool {
+	that, ok := thatMsg.(*GetIPMIInfoResponse)
 	if !ok {
 		return false
 	}
@@ -130,18 +190,6 @@ func (m *SetIPMICredentialsRequest) MarshalToSizedBufferVT(dAtA []byte) (int, er
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if len(m.Pass) > 0 {
-		i -= len(m.Pass)
-		copy(dAtA[i:], m.Pass)
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Pass)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if m.Uid != 0 {
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Uid))
-		i--
-		dAtA[i] = 0x8
-	}
 	return len(dAtA) - i, nil
 }
 
@@ -175,17 +223,88 @@ func (m *SetIPMICredentialsResponse) MarshalToSizedBufferVT(dAtA []byte) (int, e
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if len(m.Error) > 0 {
-		i -= len(m.Error)
-		copy(dAtA[i:], m.Error)
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Error)))
+	if len(m.Password) > 0 {
+		i -= len(m.Password)
+		copy(dAtA[i:], m.Password)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Password)))
 		i--
-		dAtA[i] = 0x12
+		dAtA[i] = 0xa
 	}
-	if len(m.Message) > 0 {
-		i -= len(m.Message)
-		copy(dAtA[i:], m.Message)
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Message)))
+	return len(dAtA) - i, nil
+}
+
+func (m *GetIPMIInfoRequest) MarshalVT() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVT(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetIPMIInfoRequest) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *GetIPMIInfoRequest) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *GetIPMIInfoResponse) MarshalVT() (dAtA []byte, err error) {
+	if m == nil {
+		return nil, nil
+	}
+	size := m.SizeVT()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBufferVT(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *GetIPMIInfoResponse) MarshalToVT(dAtA []byte) (int, error) {
+	size := m.SizeVT()
+	return m.MarshalToSizedBufferVT(dAtA[:size])
+}
+
+func (m *GetIPMIInfoResponse) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
+	if m == nil {
+		return 0, nil
+	}
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.unknownFields != nil {
+		i -= len(m.unknownFields)
+		copy(dAtA[i:], m.unknownFields)
+	}
+	if m.Port != 0 {
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Port))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Ip) > 0 {
+		i -= len(m.Ip)
+		copy(dAtA[i:], m.Ip)
+		i = protohelpers.EncodeVarint(dAtA, i, uint64(len(m.Ip)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -198,13 +317,6 @@ func (m *SetIPMICredentialsRequest) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	if m.Uid != 0 {
-		n += 1 + protohelpers.SizeOfVarint(uint64(m.Uid))
-	}
-	l = len(m.Pass)
-	if l > 0 {
-		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
-	}
 	n += len(m.unknownFields)
 	return n
 }
@@ -215,13 +327,36 @@ func (m *SetIPMICredentialsResponse) SizeVT() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Message)
+	l = len(m.Password)
 	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
-	l = len(m.Error)
+	n += len(m.unknownFields)
+	return n
+}
+
+func (m *GetIPMIInfoRequest) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	n += len(m.unknownFields)
+	return n
+}
+
+func (m *GetIPMIInfoResponse) SizeVT() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Ip)
 	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
+	}
+	if m.Port != 0 {
+		n += 1 + protohelpers.SizeOfVarint(uint64(m.Port))
 	}
 	n += len(m.unknownFields)
 	return n
@@ -256,57 +391,6 @@ func (m *SetIPMICredentialsRequest) UnmarshalVT(dAtA []byte) error {
 			return fmt.Errorf("proto: SetIPMICredentialsRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
-		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Uid", wireType)
-			}
-			m.Uid = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protohelpers.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Uid |= uint32(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Pass", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protohelpers.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Pass = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -360,7 +444,7 @@ func (m *SetIPMICredentialsResponse) UnmarshalVT(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Message", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Password", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -388,13 +472,147 @@ func (m *SetIPMICredentialsResponse) UnmarshalVT(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Message = string(dAtA[iNdEx:postIndex])
+			m.Password = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetIPMIInfoRequest) UnmarshalVT(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return protohelpers.ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetIPMIInfoRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetIPMIInfoRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.unknownFields = append(m.unknownFields, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *GetIPMIInfoResponse) UnmarshalVT(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return protohelpers.ErrIntOverflow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: GetIPMIInfoResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: GetIPMIInfoResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Ip", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return protohelpers.ErrIntOverflow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return protohelpers.ErrInvalidLength
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Ip = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Port", wireType)
 			}
-			var stringLen uint64
+			m.Port = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return protohelpers.ErrIntOverflow
@@ -404,24 +622,11 @@ func (m *SetIPMICredentialsResponse) UnmarshalVT(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.Port |= uint32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return protohelpers.ErrInvalidLength
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Error = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])

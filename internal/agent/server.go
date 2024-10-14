@@ -49,7 +49,7 @@ func (s *Server) Run(ctx context.Context) error {
 		grpc.Creds(insecure.NewCredentials()),
 	)
 
-	agent.RegisterAgentServiceServer(server, &serviceServer{
+	agentpb.RegisterAgentServiceServer(server, &serviceServer{
 		logger: s.logger,
 	})
 
